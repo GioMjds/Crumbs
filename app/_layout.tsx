@@ -1,5 +1,8 @@
 import '../global.css';
 import { migrate } from '@/lib/crumbs';
+// Registers the foreground notification handler at startup.
+import '@/lib/notify';
+import { AlertHost } from '@/components/alert';
 import { NAV_THEME } from '@/lib/theme';
 import {
   BricolageGrotesque_400Regular,
@@ -7,7 +10,11 @@ import {
   BricolageGrotesque_600SemiBold,
   BricolageGrotesque_700Bold,
 } from '@expo-google-fonts/bricolage-grotesque';
-import { Literata_400Regular, Literata_400Regular_Italic, Literata_500Medium } from '@expo-google-fonts/literata';
+import {
+  Literata_400Regular,
+  Literata_400Regular_Italic,
+  Literata_500Medium,
+} from '@expo-google-fonts/literata';
 import { PortalHost } from '@rn-primitives/portal';
 import { ThemeProvider } from 'expo-router/react-navigation';
 import { Stack } from 'expo-router';
@@ -51,11 +58,17 @@ export default function RootLayout() {
           <Stack.Screen name="onboarding" options={{ animation: 'fade' }} />
           <Stack.Screen
             name="schedule"
-            options={{ presentation: 'formSheet', sheetAllowedDetents: 'fitToContents', sheetGrabberVisible: true }}
+            options={{
+              presentation: 'formSheet',
+              sheetAllowedDetents: 'fitToContents',
+              sheetGrabberVisible: true,
+              sheetCornerRadius: 28,
+            }}
           />
           <Stack.Screen name="rediscover/[id]" options={{ presentation: 'modal' }} />
         </Stack>
       </SQLiteProvider>
+      <AlertHost />
       <PortalHost />
     </ThemeProvider>
   );

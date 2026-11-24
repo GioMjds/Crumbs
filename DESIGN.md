@@ -225,7 +225,7 @@ A cool indigo-and-lavender paper palette with a single warm marigold light.
 - **Ember Red** (`ember-red`): destructive only: "Delete everything" and the trash icon.
 
 ### Dark mode (proposal)
-Dark screens are not designed yet. The runtime proposal in `global.css` inverts the roles: background #16152E, cards #201E40, text #EEEFF9, borders #34325C, muted text #ABAACB, amber #F5BE6E, marigold tint #3A2C17, destructive #F2847C. Marigold itself stays #F0A23B. Treat these as provisional until dark screens exist.
+Dark screens are not designed yet. The runtime proposal in `global.css` inverts the roles: background #16152E, cards #262450, secondary #37346A, text #EEEFF9, primary buttons #C4C2E8 with #24224A text, borders #6E6C9A, muted text #ABAACB, amber #F5BE6E, marigold tint #3A2C17 with edge #A87A30, destructive #F2847C. Marigold itself stays #F0A23B. Treat these as provisional until dark screens exist.
 
 ### Named Rules
 **The One Lamp Rule.** One marigold element per screen, besides the logo mark. Its rarity is what makes a returned crumb feel like a gift.

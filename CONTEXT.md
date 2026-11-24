@@ -78,7 +78,7 @@ Built: all screens above, SQLite data layer, onboarding, draft autosave, schedul
 
 Not built yet:
 
-- Real local notifications. The schedule and `notify` flag are saved, but nothing is scheduled with `expo-notifications`; the banner is driven by `refreshPending` when the app opens.
+- Notification tap routing. A weekly local notification is scheduled (`lib/notify.ts`), but tapping it only opens the app; the banner is still driven by `refreshPending`.
 - The 24-hour seal on crumb editing.
 - Dark-mode screen review.
 - `button.tsx` and `text.tsx` in `components/ui` are still stock Reusables and do not match DESIGN.md.

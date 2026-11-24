@@ -1,3 +1,4 @@
+import { Alert } from '@/components/alert';
 import { Header } from '@/components/header';
 import { Screen } from '@/components/screen';
 import { Icon } from '@/components/ui/icon';
@@ -7,7 +8,7 @@ import { ago, full, shortDate, when } from '@/lib/format';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { ShareIcon, Trash2Icon } from 'lucide-react-native';
-import { Alert, Pressable, ScrollView, Share, View } from 'react-native';
+import { Pressable, ScrollView, Share, View } from 'react-native';
 
 export default function CrumbScreen() {
   const db = useSQLiteContext();

@@ -1,10 +1,13 @@
 import { Screen } from '@/components/screen';
+import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { DAY, getSchedule, setSetting, useFocusData } from '@/lib/crumbs';
 import { DAYS, dayLabel, hourLabel } from '@/lib/format';
+import { syncNotification } from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { type SQLiteDatabase, useSQLiteContext } from 'expo-sqlite';
+import { MinusIcon, PlusIcon } from 'lucide-react-native';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
@@ -49,21 +52,22 @@ export default function ScheduleSheet() {
       setSetting(db, 'hour', String(h)),
       setSetting(db, 'notify', '1'),
     ]);
+    await syncNotification(db);
     router.back();
   };
 
   return (
-    <Screen sheet className="px-gutter pb-5 pt-6">
+    <Screen sheet className="px-gutter pt-7">
       {first ? (
         <View className="mb-2 flex-row items-center gap-1.5">
-          <View className="bg-marigold size-2 rounded-full" />
+          <View className="size-2 rounded-full bg-marigold" />
           <Text className="font-sans-medium text-caption text-amber">First crumb dropped</Text>
         </View>
       ) : null}
       <Text role="heading" aria-level="1" className="font-sans-bold text-sheet">
         When should crumbs come back?
       </Text>
-      <Text className="text-body mt-2 text-muted-foreground">
+      <Text className="mt-2 text-body text-muted-foreground">
         One a week, never more.
         {data.firstAt ? ` Your first can come back after ${dayLabel(data.firstAt + 7 * DAY)}.` : ''}
       </Text>
@@ -77,9 +81,10 @@ export default function ScheduleSheet() {
               onPress={() => setMode(o.mode)}
               role="radio"
               aria-checked={on}
+              // Border width stays 2 in both states so content never shifts on select.
               className={cn(
-                'rounded-card flex-row items-center gap-3 border p-4',
-                on ? 'border-2 border-foreground bg-card' : 'border-border'
+                'flex-row items-center gap-3 rounded-card border-2 p-4 active:bg-secondary',
+                on ? 'border-foreground' : 'border-border'
               )}>
               <View
                 className={cn(
@@ -88,7 +93,7 @@ export default function ScheduleSheet() {
                 )}>
                 {on ? <View className="size-3 rounded-full bg-foreground" /> : null}
               </View>
-              <View className="flex-1">
+              <View className="flex-1 gap-0.5">
                 <Text className="font-sans-semibold text-label">{o.title}</Text>
                 <Text className="text-meta text-muted-foreground">{o.hint}</Text>
               </View>
@@ -98,8 +103,9 @@ export default function ScheduleSheet() {
       </View>
 
       {m === 'fixed' ? (
-        <View className="mt-4 gap-3">
-          <View className="flex-row justify-between">
+        <View className="mt-5 gap-2">
+          <Text className="font-sans-medium text-meta text-muted-foreground">Day</Text>
+          <View className="flex-row gap-1.5" role="radiogroup">
             {DAYS.map((label, i) => (
               <Pressable
                 key={label}
@@ -108,8 +114,8 @@ export default function ScheduleSheet() {
                 aria-checked={d === i}
                 aria-label={label}
                 className={cn(
-                  'size-10 items-center justify-center rounded-full',
-                  d === i ? 'bg-primary' : 'bg-secondary'
+                  'h-11 flex-1 items-center justify-center rounded-full',
+                  d === i ? 'bg-primary' : 'bg-secondary active:opacity-70'
                 )}>
                 <Text
                   className={cn(
@@ -121,43 +127,51 @@ export default function ScheduleSheet() {
               </Pressable>
             ))}
           </View>
-          <View className="rounded-field flex-row items-center justify-between bg-secondary px-4">
+
+          <Text className="mt-3 font-sans-medium text-meta text-muted-foreground">Time</Text>
+          <View className="flex-row items-center rounded-field bg-secondary p-1">
             <Pressable
               onPress={() => setHour((h + 23) % 24)}
               aria-label="Earlier"
-              className="size-touch items-center justify-center">
-              <Text className="font-sans-semibold text-title">-</Text>
+              className="size-touch items-center justify-center rounded-field active:bg-card">
+              <Icon as={MinusIcon} size={20} />
             </Pressable>
-            <Text className="font-sans-semibold text-label" aria-live="polite">
+            <Text
+              className="flex-1 text-center font-sans-semibold text-label tabular-nums"
+              aria-live="polite">
               {hourLabel(h)}
             </Text>
             <Pressable
               onPress={() => setHour((h + 1) % 24)}
               aria-label="Later"
-              className="size-touch items-center justify-center">
-              <Text className="font-sans-semibold text-title">+</Text>
+              className="size-touch items-center justify-center rounded-field active:bg-card">
+              <Icon as={PlusIcon} size={20} />
             </Pressable>
           </View>
         </View>
       ) : null}
 
-      <Pressable
-        onPress={save}
-        accessibilityRole="button"
-        className="h-cta rounded-field mt-6 items-center justify-center bg-primary active:opacity-90">
-        <Text className="font-sans-semibold text-button text-primary-foreground">
-          Turn on weekly crumb
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => router.back()}
-        accessibilityRole="button"
-        className="min-h-touch items-center justify-center">
-        <Text className="font-sans-medium text-label">Not now</Text>
-      </Pressable>
-      <Text className="text-caption text-center text-muted-foreground">
-        You can change this anytime in Settings.
-      </Text>
+      <View className="mt-6 pb-4">
+        <Pressable
+          onPress={save}
+          accessibilityRole="button"
+          className="h-cta items-center justify-center rounded-field bg-primary active:opacity-90">
+          <Text className="font-sans-semibold text-button text-primary-foreground">
+            {first ? 'Turn on weekly crumb' : 'Save'}
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() => router.back()}
+          accessibilityRole="button"
+          className="mt-1 min-h-touch items-center justify-center active:opacity-70">
+          <Text className="font-sans-medium text-label">{first ? 'Not now' : 'Cancel'}</Text>
+        </Pressable>
+        {first ? (
+          <Text className="text-center text-caption text-muted-foreground">
+            You can change this anytime in Settings.
+          </Text>
+        ) : null}
+      </View>
     </Screen>
   );
 }
