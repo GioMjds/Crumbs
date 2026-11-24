@@ -2,21 +2,37 @@ import { Chip } from '@/components/chip';
 import { Header } from '@/components/header';
 import { Screen } from '@/components/screen';
 import { Text } from '@/components/ui/text';
-import { DAY, type Crumb, listCrumbs, markBack, pullOne, useFocusData } from '@/lib/crumbs';
+import { DAY, type Crumb, listCrumbs, pullOne, useFocusData } from '@/lib/crumbs';
 import { plural, shortDate, when } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { FlatList, Pressable, View } from 'react-native';
 
-type Row = { key: string; kind: 'heading'; title: string; hint?: string; toggle?: boolean } | { key: string; kind: 'crumb'; crumb: Crumb; recent: boolean };
+interface Heading {
+  key: string;
+  kind: 'heading';
+  title: string;
+  hint?: string;
+  toggle?: boolean;
+}
+
+interface CrumbRow {
+  key: string;
+  kind: 'crumb';
+  crumb: Crumb;
+  recent: boolean;
+}
+
+type Row = Heading | CrumbRow;
 
 export default function JarScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
   const crumbs = useFocusData(listCrumbs);
   const [hidden, setHidden] = useState(false);
+  const pulling = useRef(false);
 
   if (!crumbs) return <Screen />;
 
@@ -37,26 +53,38 @@ export default function JarScreen() {
       toggle: true,
       hint: `${plural(resting.length, 'older crumb')}. One may come back each week.`,
     });
-    if (!hidden) resting.forEach((c) => rows.push({ key: `c${c.id}`, kind: 'crumb', crumb: c, recent: false }));
+    if (!hidden)
+      resting.forEach((c) =>
+        rows.push({ key: `c${c.id}`, kind: 'crumb', crumb: c, recent: false })
+      );
   }
 
   const pull = async () => {
-    const id = await pullOne(db);
-    if (id === null) return;
-    await markBack(db, id);
-    router.push({ pathname: '/rediscover/[id]', params: { id } });
+    if (pulling.current) return;
+    pulling.current = true;
+    try {
+      const id = await pullOne(db);
+      if (id !== null) router.push({ pathname: '/rediscover/[id]', params: { id } });
+    } finally {
+      pulling.current = false;
+    }
   };
 
   return (
     <Screen>
-      <Header title="Your jar" right={<Text className="text-meta text-muted-foreground">{plural(crumbs.length, 'crumb')}</Text>} />
+      <Header
+        title="Your jar"
+        right={
+          <Text className="text-meta text-muted-foreground">{plural(crumbs.length, 'crumb')}</Text>
+        }
+      />
       <FlatList
         data={rows}
         keyExtractor={(r) => r.key}
         contentContainerClassName="px-gutter pb-8"
         ListHeaderComponent={
-          <View className="mb-4 mt-2 flex-row items-center gap-3 rounded-card bg-card p-3 pl-4">
-            <Text className="flex-1 text-body">Stuck? Pull a crumb out of the jar.</Text>
+          <View className="rounded-card mb-4 mt-2 flex-row items-center gap-3 bg-card p-3 pl-4">
+            <Text className="text-body flex-1">Stuck? Pull a crumb out of the jar.</Text>
             <Pressable
               onPress={pull}
               disabled={crumbs.every((c) => c.status === 'let_go')}
@@ -67,7 +95,7 @@ export default function JarScreen() {
           </View>
         }
         ListEmptyComponent={
-          <Text className="mt-8 text-center font-serif text-crumb-sm text-muted-foreground">
+          <Text className="text-crumb-sm mt-8 text-center font-serif text-muted-foreground">
             The jar is empty. Drop a thought and it will rest here.
           </Text>
         }
@@ -79,21 +107,33 @@ export default function JarScreen() {
                   {item.title}
                 </Text>
                 {item.toggle ? (
-                  <Pressable onPress={() => setHidden((h) => !h)} accessibilityRole="button" hitSlop={8}>
-                    <Text className="font-sans-medium text-meta text-muted-foreground">{hidden ? 'Show' : 'Hide'}</Text>
+                  <Pressable
+                    onPress={() => setHidden((h) => !h)}
+                    accessibilityRole="button"
+                    hitSlop={8}>
+                    <Text className="font-sans-medium text-meta text-muted-foreground">
+                      {hidden ? 'Show' : 'Hide'}
+                    </Text>
                   </Pressable>
                 ) : null}
               </View>
-              {item.hint ? <Text className="mt-1 text-caption text-muted-foreground">{item.hint}</Text> : null}
+              {item.hint ? (
+                <Text className="text-caption mt-1 text-muted-foreground">{item.hint}</Text>
+              ) : null}
             </View>
           ) : (
             <Pressable
-              onPress={() => router.push({ pathname: '/crumb/[id]', params: { id: item.crumb.id } })}
+              onPress={() =>
+                router.push({ pathname: '/crumb/[id]', params: { id: item.crumb.id } })
+              }
               accessibilityRole="button"
               className="mt-3 gap-1 border-b border-border pb-3">
               <Text
                 numberOfLines={2}
-                className={cn('font-serif text-crumb-sm', item.crumb.status === 'let_go' && 'text-muted-foreground')}>
+                className={cn(
+                  'text-crumb-sm font-serif',
+                  item.crumb.status === 'let_go' && 'text-muted-foreground'
+                )}>
                 {item.crumb.body}
               </Text>
               <View className="flex-row items-center gap-2">

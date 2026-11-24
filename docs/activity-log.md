@@ -53,3 +53,20 @@
 
 - `components/alert.tsx` replaces native `Alert.alert` with a themed dialog (jar Lottie, stacked buttons, Cancel last). Same call signature; `AlertHost` is mounted in `app/_layout.tsx`.
 - Dark mode recolors the jar's Inkwell lid and outline via Lottie `colorFilters`; reduced motion shows the final frame.
+
+## 2026-11-24 Pull one fixes
+
+- "Pull one" in `app/jar.tsx` no longer calls `markBack`. Before, a manual pull cleared Home's pending banner and blocked the weekly return for 7 days. `markBack` now runs only when the pending crumb is opened, as CONTEXT.md describes.
+- "Pull one" ignores taps while a pull is in flight, so a double tap cannot stack two Rediscover sheets.
+- Decision: manual pulls no longer count toward `came_back_count` or `last_back_at`.
+
+## 2026-11-24 Onboarding jar redesign
+
+- New `components/jar-scene.tsx`: a faux-3D SVG jar built from the logo-mark outline (elliptical base, rim, cylinder gradient, glass highlights, two-tone lid), themed from `THEME` for light and dark.
+- Onboarding steps are now a story stepper. Step 1 drops a crumb in, step 2 fogs the glass, step 3 lifts one crumb back out with a single ring pulse.
+- Steps auto-advance every 3.5s for one cycle (1, 2, 3, 1), then stop. Any tap on a step or the jar stops it.
+- Tapping the jar drops a crumb (light haptic, small wobble). The pile caps at 12 crumbs. Crumbs breathe slowly while idle.
+- Reduced motion: no breathing, wobble, falls or lid nudge; steps switch as static frames.
+- Only the active step badge is marigold (One Lamp Rule); inactive badges and copy use muted tones.
+- `jar.json` is no longer used on onboarding; `components/alert.tsx` still uses it.
+- Verification: web bundling fails before this change (`lottie-react-native` on web needs `@lottiefiles/dotlottie-react`), and no Android SDK is installed here. `docs/screenshots/onboarding-jar-frames.png` shows the static SVG frames rendered in Chrome, not the running app.
