@@ -1,27 +1,26 @@
 {
   "expo": {
-    "name": "./",
-    "slug": "./",
+    "name": "Crumbs",
+    "slug": "crumbs",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "scheme": "crumbs",
     "icon": "./assets/images/icon.png",
-    "scheme": "./",
     "userInterfaceStyle": "automatic",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
-      "supportsTablet": true
+      "icon": {
+        "light": "./assets/images/icon.png",
+        "dark": "./assets/images/ios-dark.png",
+        "tinted": "./assets/images/ios-tinted.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/android-foreground.png",
+        "monochromeImage": "./assets/images/android-monochrome.png",
+        "backgroundColor": "#24224A"
       }
     },
     "web": {
-      "bundler": "metro",
-      "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -29,15 +28,40 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash.png",
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "backgroundColor": "#EEEFF9",
+          "dark": {
+            "image": "./assets/images/splash-icon-dark.png",
+            "backgroundColor": "#16152E"
+          }
         }
       ],
-      "expo-status-bar"
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#F0A23B"
+        }
+      ],
+      "expo-sqlite",
+      "expo-font"
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "owner": "mimic1",
+    "extra": {
+      "eas": {
+        "projectId": "df5a9698-64eb-47bf-a125-fa917594953a"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/df5a9698-64eb-47bf-a125-fa917594953a"
     }
   }
 }

@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-24T18:30:00Z",
+  "title": "Design System: Crumbs",
+  "extensions": {
+    "colorMeta": {
+      "inkwell": { "role": "primary", "displayName": "Inkwell", "canonical": "hsl(243.0 37.0% 21.2%)", "tonalRamp": ["#16152E", "#201E40", "#24224A", "#34325C", "#5A5880", "#8E8CB0", "#D6D7EC", "#EEEFF9"] },
+      "marigold": { "role": "secondary", "displayName": "Marigold", "canonical": "hsl(34.1 85.8% 58.6%)", "tonalRamp": ["#3A2C17", "#6B4C1F", "#8F5400", "#F0A23B", "#F5BE6E", "#F0C27E", "#FCEBD2", "#FEF7EC"] },
+      "marigold-tint": { "role": "secondary", "displayName": "Marigold Tint", "canonical": "hsl(35.7 87.5% 90.6%)", "tonalRamp": ["#3A2C17", "#6B4C1F", "#8F5400", "#F0A23B", "#F5BE6E", "#F0C27E", "#FCEBD2", "#FEF7EC"] },
+      "marigold-edge": { "role": "secondary", "displayName": "Marigold Edge", "canonical": "hsl(35.8 79.2% 71.8%)", "tonalRamp": ["#3A2C17", "#6B4C1F", "#8F5400", "#F0A23B", "#F5BE6E", "#F0C27E", "#FCEBD2", "#FEF7EC"] },
+      "amber": { "role": "secondary", "displayName": "Amber", "canonical": "hsl(35.2 100.0% 28.0%)", "tonalRamp": ["#3A2C17", "#6B4C1F", "#8F5400", "#F0A23B", "#F5BE6E", "#F0C27E", "#FCEBD2", "#FEF7EC"] },
+      "dusk-mist": { "role": "neutral", "displayName": "Dusk Mist", "canonical": "hsl(234.5 47.8% 95.5%)", "tonalRamp": ["#16152E", "#201E40", "#24224A", "#34325C", "#5A5880", "#8E8CB0", "#D6D7EC", "#EEEFF9"] },
+      "lamplit-page": { "role": "neutral", "displayName": "Lamplit Page", "canonical": "hsl(240.0 60.0% 99.0%)", "tonalRamp": ["#16152E", "#201E40", "#24224A", "#34325C", "#5A5880", "#8E8CB0", "#D6D7EC", "#FBFBFE"] },
+      "mist-deep": { "role": "neutral", "displayName": "Mist Deep", "canonical": "hsl(236.2 42.1% 92.5%)", "tonalRamp": ["#16152E", "#201E40", "#24224A", "#34325C", "#5A5880", "#8E8CB0", "#D6D7EC", "#E4E5F4"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "hsl(237.3 36.7% 88.2%)", "tonalRamp": ["#16152E", "#201E40", "#24224A", "#34325C", "#5A5880", "#8E8CB0", "#D6D7EC", "#EEEFF9"] },
+      "slate-ink": { "role": "neutral", "displayName": "Slate Ink", "canonical": "hsl(243.0 18.5% 42.4%)", "tonalRamp": ["#16152E", "#201E40", "#24224A", "#34325C", "#5A5880", "#8E8CB0", "#D6D7EC", "#EEEFF9"] },
+      "ember-red": { "role": "neutral", "displayName": "Ember Red", "canonical": "hsl(3.2 71.3% 41.0%)", "tonalRamp": ["#361816", "#642421", "#972C26", "#B3261E", "#D96059", "#F2847C", "#E7C7C5", "#F6EFEE"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Onboarding headline only." },
+      "headline": { "displayName": "Headline", "purpose": "Bottom sheet titles." },
+      "title": { "displayName": "Title", "purpose": "Screen titles in the header row." },
+      "label": { "displayName": "Label", "purpose": "Section headers, option titles, field labels." },
+      "button": { "displayName": "Button", "purpose": "All button text." },
+      "body": { "displayName": "Body", "purpose": "Helper copy, settings rows, privacy lines." },
+      "meta": { "displayName": "Meta", "purpose": "Timestamps, badges, composer status." },
+      "caption": { "displayName": "Caption", "purpose": "Footnotes under actions." },
+      "crumb-lg": { "displayName": "Crumb Large", "purpose": "The returned crumb in Rediscovery and crumb detail." },
+      "crumb": { "displayName": "Crumb", "purpose": "The capture field; placeholder in Literata italic." },
+      "crumb-md": { "displayName": "Crumb Medium", "purpose": "Returned crumb above the layer field, and layer text." },
+      "crumb-sm": { "displayName": "Crumb Small", "purpose": "Crumb previews in the jar list." }
+    },
+    "shadows": [
+      { "name": "scrim", "value": "rgba(36, 34, 74, 0.45)", "purpose": "Backdrop behind bottom sheets; the only depth effect in the system." }
+    ],
+    "motion": [
+      { "name": "ease-crumb", "value": "cubic-bezier(0.6, 0, 0.4, 1)", "purpose": "Easing used by the Lottie animations (jar, crumb drop, crumb mark)." },
+      { "name": "crumb-drop", "value": "933ms", "purpose": "assets/lottiefiles/crumb-drop.json: a crumb falls into the jar after Drop." },
+      { "name": "crumb-mark", "value": "2000ms", "purpose": "assets/lottiefiles/crumb-mark.json: the three-dot crumb mark animating." },
+      { "name": "jar", "value": "3000ms", "purpose": "assets/lottiefiles/jar.json: the onboarding jar with its lid and crumbs." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Full-width Inkwell action, one per region.",
+      "html": "<button class=\"ds-btn-primary\">Turn on weekly crumb</button>",
+      "css": ".ds-btn-primary { display: block; width: 100%; height: 56px; background: #24224A; color: #FBFBFE; border: none; border-radius: 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 17px; line-height: 22px; font-weight: 600; cursor: pointer; transition: background 0.15s; } .ds-btn-primary:hover { background: rgba(36, 34, 74, 0.9); } .ds-btn-primary:active { background: rgba(36, 34, 74, 0.9); } .ds-btn-primary:focus-visible { outline: 3px solid rgba(240, 162, 59, 0.5); outline-offset: 2px; }"
+    },
+    {
+      "name": "Pill Button",
+      "kind": "button",
+      "refersTo": "button-pill",
+      "description": "Compact Inkwell action in bars and banners: Drop, Open, Pull one.",
+      "html": "<button class=\"ds-btn-pill\">Drop</button> <button class=\"ds-btn-pill\" disabled>Drop</button>",
+      "css": ".ds-btn-pill { height: 44px; padding: 0 20px; background: #24224A; color: #FBFBFE; border: none; border-radius: 9999px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 17px; line-height: 22px; font-weight: 600; cursor: pointer; transition: background 0.15s; } .ds-btn-pill:hover { background: rgba(36, 34, 74, 0.9); } .ds-btn-pill:focus-visible { outline: 3px solid rgba(240, 162, 59, 0.5); outline-offset: 2px; } .ds-btn-pill:disabled { background: #D6D7EC; color: #5A5880; cursor: default; }"
+    },
+    {
+      "name": "Outline and Tonal Buttons",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "The Keep and Let go pair under a returned crumb.",
+      "html": "<div class=\"ds-btn-pair\"><button class=\"ds-btn-outline\">Keep</button><button class=\"ds-btn-tonal\">Let go</button></div>",
+      "css": ".ds-btn-pair { display: flex; gap: 12px; } .ds-btn-outline, .ds-btn-tonal { flex: 1; height: 56px; border-radius: 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 17px; line-height: 22px; font-weight: 600; color: #24224A; cursor: pointer; transition: background 0.15s; } .ds-btn-outline { background: #FBFBFE; border: 1.5px solid #24224A; } .ds-btn-outline:hover { background: #EEEFF9; } .ds-btn-tonal { background: #EEEFF9; border: none; } .ds-btn-tonal:hover { background: #E4E5F4; } .ds-btn-outline:focus-visible, .ds-btn-tonal:focus-visible { outline: 3px solid rgba(240, 162, 59, 0.5); outline-offset: 2px; }"
+    },
+    {
+      "name": "Destructive Button",
+      "kind": "button",
+      "refersTo": "button-destructive",
+      "description": "Outlined Ember Red action for irreversible deletes.",
+      "html": "<button class=\"ds-btn-destructive\">Delete everything</button>",
+      "css": ".ds-btn-destructive { display: block; width: 100%; height: 56px; background: transparent; color: #B3261E; border: 1.5px solid #B3261E; border-radius: 16px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 17px; line-height: 22px; font-weight: 600; cursor: pointer; transition: background 0.15s; } .ds-btn-destructive:hover { background: rgba(179, 38, 30, 0.06); } .ds-btn-destructive:focus-visible { outline: 3px solid rgba(240, 162, 59, 0.5); outline-offset: 2px; }"
+    },
+    {
+      "name": "Header with Count Chip",
+      "kind": "nav",
+      "refersTo": "chip-count",
+      "description": "Capture-screen header: crumb mark and wordmark, jar count chip, settings icon.",
+      "html": "<header class=\"ds-header\"><span class=\"ds-brand\"><svg width=\"30\" height=\"20\" viewBox=\"0 0 30 20\" aria-hidden=\"true\"><circle cx=\"8\" cy=\"12\" r=\"7\" fill=\"#F0A23B\"/><circle cx=\"20\" cy=\"5\" r=\"4.5\" fill=\"#F0A23B\"/><circle cx=\"22\" cy=\"16\" r=\"3\" fill=\"#F0A23B\"/></svg>Crumbs</span><button class=\"ds-chip-count\"><svg width=\"16\" height=\"18\" viewBox=\"0 0 16 18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" aria-hidden=\"true\"><rect x=\"4.5\" y=\"1\" width=\"7\" height=\"3\" rx=\"1\"/><path d=\"M5 4v1.5Q5 6.5 4 7.3Q2 9 2 11.5V15q0 2 2 2h8q2 0 2-2v-3.5Q14 9 12 7.3Q11 6.5 11 5.5V4\"/></svg>42 crumbs</button><button class=\"ds-icon-btn\" aria-label=\"Settings\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#24224A\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6\"/></svg></button></header>",
+      "css": ".ds-header { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: #EEEFF9; } .ds-brand { display: flex; align-items: center; gap: 8px; margin-right: auto; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 22px; line-height: 28px; font-weight: 700; color: #24224A; } .ds-chip-count { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; background: transparent; color: #5A5880; border: 1px solid #D6D7EC; border-radius: 9999px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 15px; line-height: 22px; cursor: pointer; } .ds-chip-count:hover { background: #E4E5F4; } .ds-icon-btn { width: 44px; height: 44px; display: grid; place-items: center; background: transparent; border: none; border-radius: 9999px; cursor: pointer; } .ds-icon-btn:hover { background: #E4E5F4; } .ds-chip-count:focus-visible, .ds-icon-btn:focus-visible { outline: 3px solid rgba(240, 162, 59, 0.5); outline-offset: 2px; }"
+    },
+    {
+      "name": "Return Banner",
+      "kind": "custom",
+      "refersTo": "return-banner",
+      "description": "The 'A crumb is back' moment; the screen's one marigold element.",
+      "html": "<div class=\"ds-return\"><svg width=\"40\" height=\"32\" viewBox=\"0 0 40 32\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"20\" r=\"10\" fill=\"#F0A23B\"/><circle cx=\"28\" cy=\"9\" r=\"6.5\" fill=\"#F0A23B\"/><circle cx=\"30\" cy=\"25\" r=\"4\" fill=\"#F0A23B\"/></svg><div class=\"ds-return-text\"><strong>A crumb is back</strong><span>From 3 months ago</span></div><button class=\"ds-return-open\">Open</button></div>",
+      "css": ".ds-return { display: flex; align-items: center; gap: 14px; padding: 16px; background: #FCEBD2; border: 1px solid #F0C27E; border-radius: 18px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; } .ds-return-text { display: flex; flex-direction: column; margin-right: auto; } .ds-return-text strong { font-size: 16px; line-height: 22px; font-weight: 600; color: #24224A; } .ds-return-text span { font-size: 15px; line-height: 22px; color: #8F5400; } .ds-return-open { height: 40px; padding: 0 18px; background: #24224A; color: #FBFBFE; border: none; border-radius: 9999px; font-family: inherit; font-size: 17px; font-weight: 600; cursor: pointer; } .ds-return-open:hover { background: rgba(36, 34, 74, 0.9); } .ds-return-open:focus-visible { outline: 3px solid rgba(36, 34, 74, 0.4); outline-offset: 2px; }"
+    },
+    {
+      "name": "Layer Field",
+      "kind": "input",
+      "refersTo": "input-layer",
+      "description": "Where a new layer is written onto a returned crumb, in Literata.",
+      "html": "<label class=\"ds-layer\"><span class=\"ds-layer-head\"><span>Your thought today</span><span class=\"ds-layer-date\">Nov 24</span></span><textarea class=\"ds-layer-input\" rows=\"3\" placeholder=\"Add a thought\">Could start with an ESP32 and a cheap sensor.</textarea></label>",
+      "css": ".ds-layer { display: flex; flex-direction: column; gap: 10px; padding: 20px; background: #FBFBFE; } .ds-layer-head { display: flex; justify-content: space-between; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 16px; line-height: 22px; font-weight: 600; color: #24224A; } .ds-layer-date { font-size: 14px; font-weight: 400; color: #5A5880; } .ds-layer-input { padding: 16px; background: #EEEFF9; color: #24224A; border: 1px solid #D6D7EC; border-radius: 12px; font-family: 'Literata', Georgia, serif; font-size: 20px; line-height: 28px; resize: none; outline: none; } .ds-layer-input::placeholder { color: #5A5880; font-style: italic; } .ds-layer-input:focus-visible { border-color: #24224A; }"
+    },
+    {
+      "name": "Option Card",
+      "kind": "card",
+      "refersTo": "option-card",
+      "description": "Radio choice in the weekly-crumb sheet; selected gets an Inkwell border.",
+      "html": "<div class=\"ds-options\" role=\"radiogroup\"><button class=\"ds-option\" role=\"radio\" aria-checked=\"true\"><span class=\"ds-radio\"></span><span><strong>Surprise me</strong><small>Any day, between 9 AM and 8 PM</small></span></button><button class=\"ds-option\" role=\"radio\" aria-checked=\"false\"><span class=\"ds-radio\"></span><span><strong>Same time every week</strong><small>Choose a day and time</small></span></button></div>",
+      "css": ".ds-options { display: flex; flex-direction: column; gap: 12px; } .ds-option { display: flex; align-items: center; gap: 14px; padding: 16px; text-align: left; background: #FBFBFE; border: 1px solid #D6D7EC; border-radius: 18px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; cursor: pointer; } .ds-option strong { display: block; font-size: 16px; line-height: 22px; font-weight: 600; color: #24224A; } .ds-option small { display: block; font-size: 15px; line-height: 22px; color: #5A5880; } .ds-option[aria-checked=\"true\"] { border: 1.5px solid #24224A; } .ds-option:hover { background: #EEEFF9; } .ds-option:focus-visible { outline: 3px solid rgba(240, 162, 59, 0.5); outline-offset: 2px; } .ds-radio { flex: none; width: 22px; height: 22px; border-radius: 9999px; border: 1.5px solid #5A5880; } .ds-option[aria-checked=\"true\"] .ds-radio { border-color: #24224A; background: radial-gradient(#24224A 0 6px, transparent 6.5px); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lamplit Notebook",
+    "overview": "Crumbs is a private notebook read by one warm lamp. The page is Dusk Mist and Lamplit Page, the ink is Inkwell, and the only warm light is marigold: it falls on a crumb when it comes back, and almost nowhere else. The user's own words are set in a book serif and given the most space on every screen; everything the app says is a small, plain grotesque that stays out of the way.\n\nThe mood is warm, unhurried, calm, and private. Screens are sparse and single-column, with generous vertical space and one obvious next step. Components are quiet and tactile: soft corners, hairline borders, and tonal surfaces that read as paper and pencil rather than chrome. Nothing pulses, counts up, or competes for attention.\n\nCrumbs must never look like a gamified habit app. There are no streaks, flames, confetti, progress rings, or reward badges.",
+    "keyCharacteristics": [
+      "Two voices: Literata for the user's words, Bricolage Grotesque for the app's.",
+      "One lamp: marigold appears once per screen, on the returned-crumb moment or a crumb marker.",
+      "Flat paper: depth comes from tone and hairlines, never shadows. Only bottom sheets float.",
+      "Decisive ink: primary actions are solid Inkwell; everything else is outline, tonal, or text.",
+      "Soft corners on a ladder from fields to sheets; pills for compact actions and chips."
+    ],
+    "rules": [
+      { "name": "The One Lamp Rule", "body": "One marigold element per screen, besides the logo mark. Its rarity is what makes a returned crumb feel like a gift.", "section": "colors" },
+      { "name": "The Amber Text Rule", "body": "Marigold is never text. Warm text uses Amber, which passes contrast in light and dark.", "section": "colors" },
+      { "name": "The Tinted Extremes Rule", "body": "No pure black or pure white. The darkest ink is Inkwell, and the lightest surface is Lamplit Page.", "section": "colors" },
+      { "name": "The Two Voices Rule", "body": "Literata is only for the user's own words: crumbs and layers. Every label, button, heading, and helper line the app writes is Bricolage Grotesque.", "section": "typography" },
+      { "name": "The Family-Name Rule", "body": "React Native selects weight by font family, not `fontWeight`. Use the weight-specific families (`font-sans-semibold`, `font-serif-italic`), never `font-bold` alone.", "section": "typography" },
+      { "name": "The Paper Rule", "body": "No shadows on buttons, cards, chips, or bars. If a surface must separate, change its tone or add a hairline border.", "section": "elevation" }
+    ],
+    "dos": [
+      "**Do** set crumbs and layers in Literata, and everything the app says in Bricolage Grotesque.",
+      "**Do** keep one marigold element per screen, besides the logo mark.",
+      "**Do** use Amber (#8F5400) for warm text, never Marigold.",
+      "**Do** separate surfaces with tone (Lamplit Page on Dusk Mist) and Hairline borders.",
+      "**Do** make primary actions full width and 56px tall, and every touch target at least 44px.",
+      "**Do** select font weights by family name (`font-sans-semibold`), not `fontWeight`."
+    ],
+    "donts": [
+      "**Don't** add streaks, flames, confetti, progress rings, or reward badges. Crumbs is not a gamified habit app.",
+      "**Don't** add shadows to buttons, cards, chips, or bars.",
+      "**Don't** set UI labels, buttons, or headings in Literata, or crumbs in Bricolage Grotesque.",
+      "**Don't** fill primary actions with Marigold; actions are Inkwell.",
+      "**Don't** use pure black (#000000) or pure white (#FFFFFF)."
+    ]
+  }
+}
