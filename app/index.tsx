@@ -21,7 +21,15 @@ import { type SQLiteDatabase, useSQLiteContext } from 'expo-sqlite';
 import { LockIcon, SlidersHorizontalIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 import { useEffect, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, TextInput, View } from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  TextInput,
+  View,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 async function load(db: SQLiteDatabase) {
   const [onboarded, draft, asked, count, pendingId] = await Promise.all([
@@ -41,10 +49,30 @@ async function load(db: SQLiteDatabase) {
   };
 }
 
+// iOS: track willShow/willHide so we switch before the animation starts.
+// Android: didShow/didHide is fine — the native `adjustResize` window mode
+// already re-laid out before we get the event.
+function useKeyboardVisible() {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+    const show = Keyboard.addListener(showEvent, () => setVisible(true));
+    const hide = Keyboard.addListener(hideEvent, () => setVisible(false));
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
+  return visible;
+}
+
 export default function CaptureScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
   const { colorScheme } = useColorScheme();
+  const insets = useSafeAreaInsets();
+  const keyboardVisible = useKeyboardVisible();
   const [tick, setTick] = useState(0);
   const data = useFocusData(load, [tick]);
   const [text, setText] = useState('');
@@ -92,7 +120,10 @@ export default function CaptureScreen() {
   };
 
   return (
-    <Screen>
+    // While the keyboard is up, release Screen's bottom safe-area padding so
+    // the bottom bar can sit flush against the keyboard. On close, hand the
+    // inset back to Screen for the home-indicator / nav-bar clearance.
+    <Screen style={{ paddingBottom: keyboardVisible ? 0 : insets.bottom }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         className="flex-1">
@@ -160,6 +191,9 @@ export default function CaptureScreen() {
           className="flex-1 px-gutter pt-5 font-serif text-crumb text-foreground"
         />
 
+        {/* Bottom bar — no padding tweaks needed. When the keyboard is up,
+            KAV pushes it above the keyboard and Screen's bottom inset is 0.
+            When the keyboard is down, Screen restores insets.bottom. */}
         <View className="min-h-16 flex-row items-center justify-between bg-card px-gutter py-2.5">
           <Text className="text-caption text-muted-foreground">
             {empty ? 'Stays on this phone' : 'Draft saved'}
