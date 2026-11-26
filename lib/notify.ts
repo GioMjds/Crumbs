@@ -3,8 +3,10 @@ import * as Notifications from 'expo-notifications';
 import type { SQLiteDatabase } from 'expo-sqlite';
 import { Platform } from 'react-native';
 
-const CHANNEL = 'weekly';
-const CONTENT = { title: 'Crumbs', body: 'A crumb may be ready to come back.' };
+// Android locks a channel's sound at creation, so the custom sound needs a fresh channel id.
+const CHANNEL = 'crumb_return';
+const SOUND = 'crumb_return.wav';
+const CONTENT = { title: 'Crumbs', body: 'A crumb may be ready to come back.', sound: SOUND };
 const HOUR = 3_600_000;
 const SURPRISE_DAYS = 60;
 // About one reminder every two days across the window; stays under the iOS cap of 64 pending.
@@ -32,11 +34,14 @@ export async function syncNotification(db: SQLiteDatabase) {
     return false;
   }
 
-  if (Platform.OS === 'android')
+  if (Platform.OS === 'android') {
+    await Notifications.deleteNotificationChannelAsync('weekly');
     await Notifications.setNotificationChannelAsync(CHANNEL, {
       name: 'Weekly crumb',
       importance: Notifications.AndroidImportance.DEFAULT,
+      sound: SOUND,
     });
+  }
 
   // Nothing to bring back yet, so stay silent until the first crumb is dropped.
   const jar = await db.getFirstAsync<{ n: number }>(
