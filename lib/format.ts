@@ -45,5 +45,5 @@ export type Schedule = { mode: 'surprise' | 'fixed'; day: number; hour: number }
 
 export const scheduleLabel = (s: Schedule) =>
   s.mode === 'surprise'
-    ? 'Surprise me, any day 9 AM to 8 PM'
+    ? 'Surprise me, any day and time'
     : `Every ${DAYS[s.day]} at ${hourLabel(s.hour)}`;

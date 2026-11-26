@@ -20,7 +20,7 @@ type Options = {
 };
 
 const OPTIONS = [
-  { mode: 'surprise', title: 'Surprise me', hint: 'Any day, between 9 AM and 8 PM' },
+  { mode: 'surprise', title: 'Surprise me', hint: 'Any day, any time of day' },
   { mode: 'fixed', title: 'Same time every week', hint: 'Choose a day and time' },
 ] satisfies Options[];
 

@@ -2,8 +2,17 @@ import { Logo } from '@/components/logo';
 import { Screen } from '@/components/screen';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { dropCrumb, getCrumb, getSetting, markBack, refreshPending, setSetting, useFocusData } from '@/lib/crumbs';
+import {
+  dropCrumb,
+  getCrumb,
+  getSetting,
+  markBack,
+  refreshPending,
+  setSetting,
+  useFocusData,
+} from '@/lib/crumbs';
 import { ago } from '@/lib/format';
+import { syncNotification } from '@/lib/notify';
 import { THEME } from '@/lib/theme';
 import { cn } from '@/lib/utils';
 import * as Haptics from 'expo-haptics';
@@ -23,7 +32,13 @@ async function load(db: SQLiteDatabase) {
     refreshPending(db),
   ]);
   const pending = pendingId ? await getCrumb(db, pendingId) : null;
-  return { onboarded: !!onboarded, draft: draft ?? '', asked: !!asked, count: count?.n ?? 0, pending };
+  return {
+    onboarded: !!onboarded,
+    draft: draft ?? '',
+    asked: !!asked,
+    count: count?.n ?? 0,
+    pending,
+  };
 }
 
 export default function CaptureScreen() {
@@ -40,6 +55,7 @@ export default function CaptureScreen() {
     if (data && !seeded.current) {
       seeded.current = true;
       setText(data.draft);
+      syncNotification(db);
     }
   }, [data]);
 
@@ -59,6 +75,7 @@ export default function CaptureScreen() {
     clearTimeout(saveTimer.current);
     await dropCrumb(db, text);
     await setSetting(db, 'draft', null);
+    syncNotification(db);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setText('');
     if (data.count === 0 && !data.asked) {
@@ -76,18 +93,24 @@ export default function CaptureScreen() {
 
   return (
     <Screen>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} className="flex-1">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        className="flex-1">
         <View className="h-14 flex-row items-center justify-between px-gutter">
           <Logo />
           <View className="flex-row items-center gap-1">
             <Pressable
               onPress={() => router.push('/jar')}
               accessibilityRole="button"
-              accessibilityLabel={data.count === 0 ? 'Open your jar, empty' : `Open your jar, ${data.count} crumbs`}
+              accessibilityLabel={
+                data.count === 0 ? 'Open your jar, empty' : `Open your jar, ${data.count} crumbs`
+              }
               className="h-9 flex-row items-center gap-1.5 rounded-full border border-border bg-card px-3">
               <Icon as={LockIcon} size={13} className="text-muted-foreground" />
               <Text className="font-sans-medium text-caption">
-                {data.count === 0 ? 'Empty jar' : `${data.count} ${data.count === 1 ? 'crumb' : 'crumbs'}`}
+                {data.count === 0
+                  ? 'Empty jar'
+                  : `${data.count} ${data.count === 1 ? 'crumb' : 'crumbs'}`}
               </Text>
             </Pressable>
             <Pressable
@@ -120,7 +143,9 @@ export default function CaptureScreen() {
             </Pressable>
           </View>
         ) : (
-          <Text className="px-gutter pt-2 text-meta text-muted-foreground">No titles, no folders. Just drop it.</Text>
+          <Text className="px-gutter pt-2 text-meta text-muted-foreground">
+            No titles, no folders. Just drop it.
+          </Text>
         )}
 
         <TextInput
@@ -136,14 +161,23 @@ export default function CaptureScreen() {
         />
 
         <View className="min-h-16 flex-row items-center justify-between bg-card px-gutter py-2.5">
-          <Text className="text-caption text-muted-foreground">{empty ? 'Stays on this phone' : 'Draft saved'}</Text>
+          <Text className="text-caption text-muted-foreground">
+            {empty ? 'Stays on this phone' : 'Draft saved'}
+          </Text>
           <Pressable
             onPress={drop}
             disabled={empty}
             accessibilityRole="button"
             accessibilityState={{ disabled: empty }}
-            className={cn('h-11 min-w-20 items-center justify-center rounded-field px-5', empty ? 'bg-secondary' : 'bg-primary')}>
-            <Text className={cn('font-sans-semibold text-button', empty ? 'text-muted-foreground' : 'text-primary-foreground')}>
+            className={cn(
+              'h-11 min-w-20 items-center justify-center rounded-field px-5',
+              empty ? 'bg-secondary' : 'bg-primary'
+            )}>
+            <Text
+              className={cn(
+                'font-sans-semibold text-button',
+                empty ? 'text-muted-foreground' : 'text-primary-foreground'
+              )}>
               Drop
             </Text>
           </Pressable>

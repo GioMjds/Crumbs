@@ -28,14 +28,19 @@ Crumbs is not a notes app. Thoughts are not filed, tagged, or searched; the jar 
 - Capture happens in short moments on the go: open the app, write the thought, drop it in the jar.
 - Rediscovery arrives as a local notification at a random time, like finding a note in an old coat. Opening it shows the returned crumb, with an "Add a thought" field to add a layer.
 - The jar holds all crumbs; it can be browsed as a list of previews.
+- **Pull one** lets the user pull a crumb from the jar by hand, alongside the timed return. It is a confirmed part of the product.
 
 ## Capabilities and Constraints
 
 - Ships on iOS and Android together. One shared Crumbs identity, with controls and navigation following each OS's native conventions.
 - Built with Expo (SDK 56) and Expo Router; storage is on-device SQLite (`expo-sqlite`); Rediscovery uses local notifications (`expo-notifications`).
 - No accounts, sign-in, or cloud sync.
-- Terminology: **crumb** (one captured thought), **jar** (the collection), **capture field** (where a crumb is written), **Rediscovery** (the moment a crumb is returned), **layer** (a thought added to a returned crumb), **Add a thought** (the field for adding a layer).
-- Open decisions: how often random Rediscovery fires and whether users can set quiet hours or a frequency; what happens to a crumb after it is returned (stays in rotation or retires).
+- Terminology: **crumb** (one captured thought), **jar** (the collection), **capture field** (where a crumb is written), **Rediscovery** (the moment a crumb is returned), **layer** (a thought added to a returned crumb), **Add a thought** (the field for adding a layer), **Pull one** (manual Rediscovery from the jar).
+- Working assumption, not confirmed: reminders start only once the jar holds a crumb that has not been let go. "Surprise me" sends about one reminder every two days at random moments, any day and any hour. The alternative is a fixed weekly day and hour.
+- Open decisions:
+  - Whether users get quiet hours or a frequency control beyond the weekly schedule.
+  - What happens to a returned crumb. The code currently offers Keep, Let go (stored but never returned), and Add a thought (which keeps it), with a 90-day rest and a 7-day minimum gap between returns. None of these rules are confirmed.
+  - Whether crumbs lock against editing after they are dropped. App copy mentions a 24-hour seal, but it is not a product commitment and is not built.
 
 ## Brand Commitments
 
@@ -47,7 +52,7 @@ Crumbs is not a notes app. Thoughts are not filed, tagged, or searched; the jar 
 ## Evidence on Hand
 
 - Brand assets and animations listed above.
-- No product screens are built yet; `app/index.tsx` is still the starter template.
+- Built screens in `app/`: capture (`index.tsx`), onboarding, jar with Pull one, crumb detail, Rediscovery modal, schedule sheet, and settings.
 - No user research, testimonials, store listing copy, or usage data exist. Do not fabricate any.
 
 ## Product Principles
